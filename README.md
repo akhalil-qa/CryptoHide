@@ -1,1 +1,1 @@
-# CryptoHide - Hiding A Secret Message Inside An Image
+# CryptoHide - Hiding a secret message inside an image
