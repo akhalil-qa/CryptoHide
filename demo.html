@@ -1,0 +1,107 @@
+<html>
+  <head>
+      <title>CryptoHide - Demo</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
+  <body>
+    <center><h2>CryptoHide - Hide secret message inside an image</h2></center>
+    <div class="form-group">
+      <label>Choose Image:</label>
+      <input id="imageFile" type="file" accept="image/x-png,image/gif,image/jpeg" class="form-control"/>
+    </div>
+    <div class="form-group">
+      <label>Enter Secret Message:</label>
+      <textarea id="message" class="form-control" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Enter Encryption Key:</label>
+      <input id="key" class="form-control"></input>
+    </div>
+    <div class="form-group">
+      <center>
+        <button id="hide" type="button" onclick="hide()" class="btn btn-md btn-success">Hide</button>
+        <button id="extract" type="button" onclick="extract()" class="btn btn-md btn-primary">Extract</button>
+      </center>
+    </div>
+  </body>
+  <script src="CryptoHide/aes.js"></script>
+  <script src="CryptoHide/Helper.js"></script>
+  <script src="CryptoHide/Convert.js"></script>
+  <script src="CryptoHide/CryptoHide.js"></script>
+  <script>
+    function hide(){
+      /* read inputs */
+      var files = document.getElementById("imageFile").files;
+      var message = document.getElementById("message").value;
+      var key = document.getElementById("key").value;
+
+      /* validate inputs */
+      if (files.length == 0) {
+        alert("No image selected. Please select an image");
+        return;
+      }
+      if (!message) {
+        alert("No message entered. Please enter your message.");
+        return;
+      }
+      if (!key) {
+        alert("No key entered. Please enter encryption key.");
+        return;
+      }
+
+      /* read the image data */
+      var image = document.createElement("img");
+      var reader = new FileReader();
+      reader.onload = function(){
+        image.src = reader.result;
+
+        /* encrypt and hide the data in input image and download the stego image */
+        image.onload = function(){
+          var imgURI = CryptoHide.Hide(image, message, key);
+          var link = document.createElement("a");
+          link.setAttribute("href", imgURI);
+          link.setAttribute("download", "stegoImage.png");
+          link.click();
+          alert("stego image downloaded to your machine.");
+        }
+      }
+      reader.readAsDataURL(files[0]);
+    }
+
+    function extract(){
+      /* read inputs */
+      var files = document.getElementById("imageFile").files;
+      var key = document.getElementById("key").value;
+
+      /* validate inputs */
+      if (files.length == 0) {
+        alert("No image selected. Please select an image");
+        return;
+      }
+      if (!message) {
+        alert("No message entered. Please enter your message.");
+        return;
+      }
+      if (!key) {
+        alert("No key entered. Please enter encryption key.");
+        return;
+      }
+
+      /* get the image and extract data */
+      var image = document.createElement("img");
+      var reader = new FileReader();
+      reader.onload = function(){
+        image.src = reader.result;
+
+        image.onload = function(){
+          var data = CryptoHide.Extract(image, key);
+          if (!data)
+            alert("Couldn't extract or decrypt hidden data!");
+          else
+            alert(data);
+        }
+      }
+      reader.readAsDataURL(files[0]);
+    }
+  </script>
+</html>
