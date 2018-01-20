@@ -51,5 +51,8 @@ CryptoHide.Extract(image, key);
 - *key*: the secret key (string)
 - **Return Value:** the decrypted secret message in string format.
 
+## Demonstration Video
+Check out the demonstration video: [Demo Video](https://streamable.com/t58tb)
+
 ## Contact
 Feel free to contact me on Twitter: [@AKhalil_90](https://twitter.com/AKhalil_90)
