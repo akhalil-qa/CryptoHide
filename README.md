@@ -25,7 +25,7 @@ At this time, the user will have an image that looks ordinary that can be sent t
 It is simple, follow these simple steps:
 1. include *CryptoHide* folder into your project's folders.
 2. In the html page where you want to use CryptoHide, include the javascript files like this:
-```javascript
+```html
 <script src="CryptoHide/aes.js"></script>
 <script src="CryptoHide/Helper.js"></script>
 <script src="CryptoHide/Convert.js"></script>
